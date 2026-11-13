@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${id == null ? 'Nuevo huésped | Hotel IBATTI' : 'Editar huésped | Hotel IBATTI'}">
+        Huéspedes | Hotel IBATTI
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+</head>
+<body class="hotel-gestion">
+    <nav class="navbar hotel-barra" data-bs-theme="dark" aria-label="Principal">
+        <div class="container py-1">
+            <a class="navbar-brand" th:href="@{/}">Hotel IBATTI</a>
+            <a class="btn btn-sm btn-outline-light" th:href="@{/huespedes}">
+                Volver a huéspedes
+            </a>
+        </div>
+    </nav>
+
+    <main class="container py-4 py-md-5">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-7">
+                <h1 class="hotel-titulo mb-4"
+                    th:text="${id == null ? 'Nuevo huésped' : 'Editar huésped'}">
+                    Nuevo huésped
+                </h1>
+
+                <div class="alert alert-danger" role="alert"
+                     th:if="${error != null}" th:text="${error}"></div>
+
+                <form class="hotel-panel p-3 p-sm-4" method="post"
+                      th:action="${id == null} ? @{/huespedes} : @{/huespedes/{id}/editar(id=${id})}">
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label" for="nombre">Nombre</label>
+                            <input class="form-control" id="nombre" name="nombre"
+                                   type="text" th:value="${nombre}" required>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label" for="apellido">Apellido</label>
+                            <input class="form-control" id="apellido" name="apellido"
+                                   type="text" th:value="${apellido}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="dni">DNI (sin puntos)</label>
+                        <input class="form-control" id="dni" name="dni" type="text"
+                               inputmode="numeric" pattern="[0-9]{7,8}"
+                               th:value="${dni}" required>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label" for="email">Correo electrónico (opcional)</label>
+                            <input class="form-control" id="email" name="email"
+                                   type="email" th:value="${email}">
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label" for="telefono">Teléfono (opcional)</label>
+                            <input class="form-control" id="telefono" name="telefono"
+                                   type="tel" th:value="${telefono}">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary" type="submit"
+                                th:text="${id == null ? 'Guardar huésped' : 'Guardar cambios'}">
+                            Guardar huésped
+                        </button>
+                        <a class="btn btn-outline-secondary" th:href="@{/huespedes}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

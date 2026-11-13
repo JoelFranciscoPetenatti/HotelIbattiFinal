@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reservas | Hotel IBATTI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+
+    <style>
+        body.hotel-reservas {
+            --hotel-tinta: #2e261e;
+            --hotel-marfil: #fcf9f3;
+            --hotel-borde: #d7c9b7;
+            --hotel-oliva: #454e3a;
+            --hotel-oliva-oscuro: #343c2c;
+
+            min-height: 100vh;
+            background-color: #f0e8dc;
+            color: var(--hotel-tinta);
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .hotel-barra {
+            background-color: #30251e;
+        }
+
+        .hotel-barra .navbar-brand,
+        .hotel-titulo {
+            font-family: "Playfair Display", Georgia, serif;
+        }
+
+        .hotel-barra .navbar-brand {
+            color: var(--hotel-marfil);
+            font-size: 1.4rem;
+        }
+
+        .hotel-titulo {
+            font-size: clamp(2.25rem, 5vw, 3rem);
+            font-weight: 500;
+        }
+
+        .hotel-panel {
+            background-color: var(--hotel-marfil);
+            border: 1px solid var(--hotel-borde);
+            border-radius: 12px;
+        }
+
+        .hotel-reservas .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .hotel-reservas .btn-primary {
+            --bs-btn-bg: var(--hotel-oliva);
+            --bs-btn-border-color: var(--hotel-oliva);
+            --bs-btn-hover-bg: var(--hotel-oliva-oscuro);
+            --bs-btn-hover-border-color: var(--hotel-oliva-oscuro);
+            --bs-btn-active-bg: var(--hotel-oliva-oscuro);
+            --bs-btn-active-border-color: var(--hotel-oliva-oscuro);
+            --bs-btn-focus-shadow-rgb: 69, 78, 58;
+        }
+
+        .hotel-reservas .form-control {
+            border-color: #a99a88;
+        }
+
+        .hotel-reservas .form-control:focus {
+            border-color: var(--hotel-oliva);
+            box-shadow: 0 0 0 0.2rem rgba(69, 78, 58, 0.2);
+        }
+
+        .hotel-tabla {
+            --bs-table-color: var(--hotel-tinta);
+            --bs-table-bg: var(--hotel-marfil);
+            --bs-table-striped-color: var(--hotel-tinta);
+            --bs-table-striped-bg: #f5eee4;
+            --bs-table-border-color: #e2d8cb;
+        }
+
+        .hotel-tabla thead th {
+            --bs-table-bg: #e9dfd1;
+            white-space: nowrap;
+        }
+
+        .hotel-tabla th,
+        .hotel-tabla td {
+            padding: 0.75rem;
+        }
+
+        .hotel-editar {
+            --bs-btn-color: #4c4034;
+            --bs-btn-border-color: #948471;
+            --bs-btn-hover-color: #2e261e;
+            --bs-btn-hover-bg: #e9dfd1;
+            --bs-btn-hover-border-color: #948471;
+        }
+
+        .hotel-cancelar {
+            --bs-btn-color: #674710;
+            --bs-btn-border-color: #a7874d;
+            --bs-btn-hover-color: #4e350b;
+            --bs-btn-hover-bg: #f0e2c5;
+            --bs-btn-hover-border-color: #a7874d;
+        }
+
+        .hotel-eliminar {
+            --bs-btn-color: #8b3c34;
+            --bs-btn-border-color: #ad726a;
+            --bs-btn-hover-color: #722c25;
+            --bs-btn-hover-bg: #f3e3de;
+            --bs-btn-hover-border-color: #ad726a;
+        }
+
+        .hotel-confirmada {
+            background-color: var(--hotel-oliva);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="hotel-reservas">
+    <nav class="navbar hotel-barra" data-bs-theme="dark" aria-label="Principal">
+        <div class="container py-1">
+            <a class="navbar-brand" th:href="@{/}">Hotel IBATTI</a>
+            <a class="btn btn-sm btn-outline-light" th:href="@{/}">Volver al inicio</a>
+        </div>
+    </nav>
+
+    <main class="container py-4 py-md-5">
+        <header class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <h1 class="hotel-titulo mb-0">Reservas</h1>
+            <a class="btn btn-primary" th:href="@{/reservas/nueva}">Nueva reserva</a>
+        </header>
+
+        <div class="alert alert-success" role="status"
+             th:if="${mensaje != null}" th:text="${mensaje}"></div>
+        <div class="alert alert-danger" role="alert"
+             th:if="${error != null}" th:text="${error}"></div>
+
+        <form class="hotel-panel p-3 mb-4" method="get" th:action="@{/reservas}">
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-sm-5 col-lg-3">
+                    <label class="form-label" for="habitacion">Número de habitación</label>
+                    <input class="form-control" id="habitacion" name="habitacion"
+                           type="text" inputmode="numeric" placeholder="Ej.: 901"
+                           th:value="${habitacion}">
+                </div>
+                <div class="col-auto d-flex flex-wrap gap-2">
+                    <button class="btn btn-primary" type="submit">Filtrar</button>
+                    <a class="btn hotel-editar" th:href="@{/reservas}">Limpiar filtro</a>
+                </div>
+            </div>
+        </form>
+
+        <div class="hotel-panel p-3" role="status" th:if="${reservas.isEmpty()}"
+             th:text="${#strings.isEmpty(habitacion) ? 'Todavía no hay reservas registradas.' : 'No hay reservas para esa habitación.'}">
+            No hay reservas.
+        </div>
+
+        <div class="hotel-panel table-responsive" th:unless="${reservas.isEmpty()}">
+            <table class="table table-striped hotel-tabla align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">N.º</th>
+                        <th scope="col">Huésped</th>
+                        <th scope="col">Habitación</th>
+                        <th scope="col">Ingreso</th>
+                        <th scope="col">Salida</th>
+                        <th scope="col" class="text-end">Total ($)</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col" class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="reserva : ${reservas}"
+                        th:with="estado=${reserva.estado().name()}">
+                        <th scope="row" th:text="${reservaStat.count}"></th>
+                        <td th:text="${reserva.huesped}"></td>
+                        <td th:text="${reserva.habitacion}"></td>
+                        <td class="text-nowrap" th:text="${reserva.ingreso}"></td>
+                        <td class="text-nowrap" th:text="${reserva.salida}"></td>
+                        <td class="text-end text-nowrap" th:text="${reserva.total}"></td>
+                        <td th:switch="${estado}">
+                            <span th:case="'CONFIRMADA'" class="badge hotel-confirmada">Confirmada</span>
+                            <span th:case="'EN_CURSO'" class="badge text-bg-primary">En curso</span>
+                            <span th:case="'FINALIZADA'" class="badge text-bg-dark">Finalizada</span>
+                            <span th:case="'CANCELADA'" class="badge text-bg-secondary">Cancelada</span>
+                            <span th:case="*" class="badge text-bg-secondary"
+                                  th:text="${estado}"></span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-end gap-2">
+                                <a class="btn btn-sm hotel-editar"
+                                   th:if="${estado != 'CANCELADA'}"
+                                   th:href="@{/reservas/{id}/editar(id=${reserva.id})}">
+                                    Editar
+                                </a>
+
+                                <form method="post" th:if="${estado == 'CONFIRMADA'}"
+                                      th:action="@{/reservas/{id}/cancelar(id=${reserva.id})}"
+                                      onsubmit="return confirm('¿Querés cancelar esta reserva? Va a quedar en el historial.')">
+                                    <button class="btn btn-sm hotel-cancelar text-nowrap" type="submit">
+                                        Cancelar reserva
+                                    </button>
+                                </form>
+
+                                <form method="post"
+                                      th:action="@{/reservas/{id}/eliminar(id=${reserva.id})}"
+                                      onsubmit="return confirm('¿Querés eliminar esta reserva definitivamente?')">
+                                    <button class="btn btn-sm hotel-eliminar" type="submit">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Habitaciones | Hotel IBATTI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+</head>
+<body class="hotel-gestion">
+    <nav class="navbar hotel-barra" data-bs-theme="dark" aria-label="Principal">
+        <div class="container py-1">
+            <a class="navbar-brand" th:href="@{/}">Hotel IBATTI</a>
+            <a class="btn btn-sm btn-outline-light" th:href="@{/}">Volver al inicio</a>
+        </div>
+    </nav>
+
+    <main class="container py-4 py-md-5">
+        <header class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <h1 class="hotel-titulo mb-0">Habitaciones</h1>
+            <a class="btn btn-primary" th:href="@{/habitaciones/nueva}">Nueva habitación</a>
+        </header>
+
+        <div class="alert alert-info" role="status"
+             th:if="${mensaje != null}" th:text="${mensaje}"></div>
+
+        <div class="hotel-panel p-3" role="status" th:if="${habitaciones.isEmpty()}">
+            Todavía no hay habitaciones registradas.
+        </div>
+
+        <div class="hotel-panel table-responsive" th:unless="${habitaciones.isEmpty()}">
+            <table class="table table-striped hotel-tabla align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">N.º</th>
+                        <th scope="col">Hotel</th>
+                        <th scope="col">Número</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Capacidad</th>
+                        <th scope="col" class="text-end">Precio por noche ($)</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col" class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="habitacion : ${habitaciones}">
+                        <th scope="row" th:text="${habitacionStat.count}"></th>
+                        <td th:text="${habitacion.hotel()}"></td>
+                        <td th:text="${habitacion.numero()}"></td>
+                        <td th:text="${habitacion.tipo()}"></td>
+                        <td th:text="${habitacion.capacidad()}"></td>
+                        <td class="text-end text-nowrap"
+                            th:text="${habitacion.precioPorNoche()}"></td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${habitacion.activa() ? 'hotel-estado-activo' : 'text-bg-secondary'}"
+                                  th:text="${habitacion.activa() ? 'Activa' : 'Inactiva'}"></span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-end gap-2">
+                                <a class="btn btn-sm btn-outline-secondary"
+                                   th:href="@{/habitaciones/{id}/editar(id=${habitacion.id()})}">
+                                    Editar
+                                </a>
+                                <form method="post"
+                                      th:action="@{/habitaciones/{id}/eliminar(id=${habitacion.id()})}"
+                                      onsubmit="return confirm('¿Querés eliminar esta habitación?')">
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

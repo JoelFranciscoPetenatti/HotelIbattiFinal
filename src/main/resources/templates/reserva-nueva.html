@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${reservaId == null ? 'Nueva reserva | Hotel IBATTI' : 'Editar reserva | Hotel IBATTI'}">
+        Reserva | Hotel IBATTI
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #f0e8dc;
+            color: #2e261e;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .hotel-barra {
+            background-color: #30251e;
+        }
+
+        .hotel-barra .navbar-brand,
+        .hotel-titulo {
+            font-family: "Playfair Display", Georgia, serif;
+        }
+
+        .hotel-barra .navbar-brand {
+            color: #fcf9f3;
+            font-size: 1.4rem;
+        }
+
+        .hotel-titulo {
+            font-size: clamp(2.25rem, 5vw, 3rem);
+            font-weight: 500;
+        }
+
+        .hotel-formulario {
+            background-color: #fcf9f3;
+            border: 1px solid #d7c9b7;
+            border-radius: 12px;
+        }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            --bs-btn-bg: #454e3a;
+            --bs-btn-border-color: #454e3a;
+            --bs-btn-hover-bg: #343c2c;
+            --bs-btn-hover-border-color: #343c2c;
+            --bs-btn-active-bg: #343c2c;
+            --bs-btn-active-border-color: #343c2c;
+            --bs-btn-focus-shadow-rgb: 69, 78, 58;
+        }
+
+        .form-control,
+        .form-select {
+            border-color: #a99a88;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #454e3a;
+            box-shadow: 0 0 0 0.2rem rgba(69, 78, 58, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar hotel-barra" data-bs-theme="dark" aria-label="Principal">
+        <div class="container py-1">
+            <a class="navbar-brand" th:href="@{/}">Hotel IBATTI</a>
+            <a class="btn btn-sm btn-outline-light" th:href="@{/reservas}">
+                Volver a reservas
+            </a>
+        </div>
+    </nav>
+
+    <main class="container py-4 py-md-5">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-7">
+                <h1 class="hotel-titulo mb-4"
+                    th:text="${reservaId == null ? 'Nueva reserva' : 'Editar reserva'}">
+                    Nueva reserva
+                </h1>
+
+                <div class="alert alert-danger" role="alert"
+                     th:if="${error != null}" th:text="${error}"></div>
+
+                <div class="alert alert-warning" role="status"
+                     th:if="${habitaciones.isEmpty()}">
+                    No hay habitaciones activas para reservar.
+                </div>
+
+                <div class="alert alert-warning" role="status"
+                     th:if="${huespedes.isEmpty()}">
+                    Primero registrá un huésped.
+                </div>
+
+                <form class="hotel-formulario p-3 p-sm-4" method="post"
+                      th:action="${reservaId == null} ? @{/reservas} : @{/reservas/{id}/editar(id=${reservaId})}"
+                      th:if="${!habitaciones.isEmpty() and !huespedes.isEmpty()}">
+                    <div class="mb-3">
+                        <label class="form-label" for="huespedId">Huésped</label>
+                        <select class="form-select" id="huespedId" name="huespedId" required>
+                            <option value="">Elegí un huésped</option>
+                            <option th:each="opcion : ${huespedes}"
+                                    th:value="${opcion.id()}"
+                                    th:text="|${opcion.etiqueta()} (ID ${opcion.id()})|"
+                                    th:selected="${huespedId == ('' + opcion.id())}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="habitacionId">Habitación</label>
+                        <select class="form-select" id="habitacionId" name="habitacionId" required>
+                            <option value="">Elegí una habitación</option>
+                            <option th:each="opcion : ${habitaciones}"
+                                    th:value="${opcion.id()}"
+                                    th:text="${opcion.etiqueta()}"
+                                    th:selected="${habitacionId == ('' + opcion.id())}"></option>
+                        </select>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label" for="ingreso">Ingreso</label>
+                            <input class="form-control" id="ingreso" name="ingreso"
+                                   type="date" th:value="${ingreso}" required>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                            <label class="form-label" for="salida">Salida</label>
+                            <input class="form-control" id="salida" name="salida"
+                                   type="date" th:value="${salida}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" for="personas">Cantidad de personas</label>
+                        <input class="form-control" id="personas" name="personas"
+                               type="number" min="1" th:value="${personas}" required>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary" type="submit"
+                                th:text="${reservaId == null ? 'Guardar reserva' : 'Guardar cambios'}">
+                            Guardar reserva
+                        </button>
+                        <a class="btn btn-outline-secondary" th:href="@{/reservas}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

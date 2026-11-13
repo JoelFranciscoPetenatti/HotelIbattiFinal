@@ -1,0 +1,110 @@
+body.hotel-gestion {
+    --hotel-fondo: #f0e8dc;
+    --hotel-marfil: #fcf9f3;
+    --hotel-tinta: #2e261e;
+    --hotel-borde: #d7c9b7;
+    --hotel-marron: #30251e;
+    --hotel-oliva: #454e3a;
+    --hotel-oliva-oscuro: #343c2c;
+
+    min-height: 100vh;
+    background-color: var(--hotel-fondo);
+    color: var(--hotel-tinta);
+    font-family: "Inter", system-ui, sans-serif;
+}
+
+.hotel-barra {
+    background-color: var(--hotel-marron);
+}
+
+.hotel-barra .navbar-brand,
+.hotel-titulo {
+    font-family: "Playfair Display", Georgia, serif;
+}
+
+.hotel-barra .navbar-brand {
+    color: var(--hotel-marfil);
+    font-size: 1.4rem;
+}
+
+.hotel-titulo {
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-weight: 500;
+}
+
+.hotel-panel {
+    background-color: var(--hotel-marfil);
+    border: 1px solid var(--hotel-borde);
+    border-radius: 12px;
+}
+
+.hotel-gestion .btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.hotel-gestion .btn-primary {
+    --bs-btn-bg: var(--hotel-oliva);
+    --bs-btn-border-color: var(--hotel-oliva);
+    --bs-btn-hover-bg: var(--hotel-oliva-oscuro);
+    --bs-btn-hover-border-color: var(--hotel-oliva-oscuro);
+    --bs-btn-active-bg: var(--hotel-oliva-oscuro);
+    --bs-btn-active-border-color: var(--hotel-oliva-oscuro);
+    --bs-btn-focus-shadow-rgb: 69, 78, 58;
+}
+
+.hotel-gestion .btn-outline-secondary {
+    --bs-btn-color: #4c4034;
+    --bs-btn-border-color: #948471;
+    --bs-btn-hover-color: var(--hotel-tinta);
+    --bs-btn-hover-bg: #e9dfd1;
+    --bs-btn-hover-border-color: #948471;
+    --bs-btn-active-color: var(--hotel-tinta);
+    --bs-btn-active-bg: #e2d8cb;
+    --bs-btn-active-border-color: #948471;
+}
+
+.hotel-gestion .btn-outline-danger {
+    --bs-btn-color: #8b3c34;
+    --bs-btn-border-color: #ad726a;
+    --bs-btn-hover-color: #722c25;
+    --bs-btn-hover-bg: #f3e3de;
+    --bs-btn-hover-border-color: #ad726a;
+    --bs-btn-active-color: #722c25;
+    --bs-btn-active-bg: #ead4ce;
+    --bs-btn-active-border-color: #ad726a;
+}
+
+.hotel-gestion .form-control,
+.hotel-gestion .form-select {
+    border-color: #a99a88;
+}
+
+.hotel-gestion .form-control:focus,
+.hotel-gestion .form-select:focus {
+    border-color: var(--hotel-oliva);
+    box-shadow: 0 0 0 0.2rem rgba(69, 78, 58, 0.2);
+}
+
+.hotel-tabla {
+    --bs-table-color: var(--hotel-tinta);
+    --bs-table-bg: var(--hotel-marfil);
+    --bs-table-striped-color: var(--hotel-tinta);
+    --bs-table-striped-bg: #f5eee4;
+    --bs-table-border-color: #e2d8cb;
+}
+
+.hotel-tabla thead th {
+    --bs-table-bg: #e9dfd1;
+    white-space: nowrap;
+}
+
+.hotel-tabla th,
+.hotel-tabla td {
+    padding: 0.75rem;
+}
+
+.hotel-estado-activo {
+    background-color: var(--hotel-oliva);
+    color: #fff;
+}

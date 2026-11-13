@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inicio | Hotel IBATTI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/hotel.css}">
+</head>
+<body class="hotel-inicio">
+    <main class="container hotel-inicio-contenido">
+        <header class="hotel-portada">
+            <h1 class="hotel-marca" th:text="${nombreHotel}">Hotel IBATTI</h1>
+            <p class="hotel-subtitulo">Sistema de gestión</p>
+
+            <p class="d-inline-flex flex-wrap align-items-center gap-2
+                      mt-3 mb-0 px-3 py-2 rounded-3 small"
+               style="background-color: var(--hotel-marfil); color: var(--hotel-tinta);">
+                <span>Disponibilidad para esta noche</span>
+                <strong th:if="${disponibilidad.activas() > 0}"
+                        th:text="|${disponibilidad.disponibles()} de ${disponibilidad.activas()} habitaciones|">
+                </strong>
+                <strong th:if="${disponibilidad.activas() == 0}">
+                    Sin habitaciones activas
+                </strong>
+            </p>
+        </header>
+
+        <nav class="row g-3 g-lg-4" aria-label="Módulos del hotel">
+            <div class="col-12 col-md-4">
+                <section class="hotel-modulo hotel-modulo-principal">
+                    <h2>Reservas</h2>
+                    <p>Registrá, editá y cancelá estadías.</p>
+                    <a class="btn hotel-acceso hotel-acceso-principal" th:href="@{/reservas}">
+                        Ver reservas <span aria-hidden="true">→</span>
+                    </a>
+                </section>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <section class="hotel-modulo">
+                    <h2>Habitaciones</h2>
+                    <p>Administrá habitaciones, capacidades y tarifas.</p>
+                    <a class="btn hotel-acceso" th:href="@{/habitaciones}">
+                        Ver habitaciones <span aria-hidden="true">→</span>
+                    </a>
+                </section>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <section class="hotel-modulo">
+                    <h2>Huéspedes</h2>
+                    <p>Registrá huéspedes y actualizá sus datos.</p>
+                    <a class="btn hotel-acceso" th:href="@{/huespedes}">
+                        Ver huéspedes <span aria-hidden="true">→</span>
+                    </a>
+                </section>
+            </div>
+        </nav>
+    </main>
+</body>
+</html>
