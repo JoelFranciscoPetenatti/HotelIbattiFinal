@@ -6,8 +6,8 @@ Proyecto integrador de Programación 2. Aplicación web para gestionar huéspede
 
 ## Integrantes
 - Luka Ibarra
-- Ángel Venditti
 - Fran Petenatti
+- Ángel Venditti
 
 ---
 
